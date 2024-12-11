@@ -1,9 +1,9 @@
 import 'dotenv/config'
 
-import { parserUserLinkProfileData } from './parser'
+import { parserUserFriendMeAllGroup, parserUserLinkProfileData } from './parser'
 
 const start = async () => {
-	// await import('./parser/parserUserFriendMeAllGroup')
 	await parserUserLinkProfileData()
+	await parserUserFriendMeAllGroup()
 }
 start()

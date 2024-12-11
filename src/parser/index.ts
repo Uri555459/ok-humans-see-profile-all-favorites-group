@@ -1,2 +1,2 @@
-// export { parserUserFriendMeAllGroup } from './parserUserFriendMeAllGroup'
+export { parserUserFriendMeAllGroup } from './parserUserFriendMeAllGroup'
 export { parserUserLinkProfileData } from './parserUserLinkProfileData'
