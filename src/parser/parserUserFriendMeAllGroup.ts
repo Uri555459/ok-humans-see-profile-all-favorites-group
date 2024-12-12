@@ -70,6 +70,6 @@ export const parserUserFriendMeAllGroup = async () => {
 			// browser.close()
 		}
 	} catch (error) {
-		console.error('Хуйня какая то произошла', error)
+		console.error('Не отловленная ошибка', error)
 	}
 }
