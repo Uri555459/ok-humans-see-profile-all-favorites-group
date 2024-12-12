@@ -1,9 +1,11 @@
 import 'dotenv/config'
 
-import { parserUserFriendMeAllGroup, parserUserLinkProfileData } from './parser'
+import { parserUserLinkProfileData } from './parser'
+
+const groupName = '/frilansuda/members'
 
 const start = async () => {
-	await parserUserLinkProfileData()
-	await parserUserFriendMeAllGroup()
+	await parserUserLinkProfileData(groupName)
+	// await parserUserFriendMeAllGroup()
 }
 start()

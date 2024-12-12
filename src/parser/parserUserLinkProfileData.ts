@@ -1,8 +1,5 @@
-import puppeteer from 'puppeteer'
-
 import type { ILinkItem } from '../@types'
-import { CONSTANTS } from '../constants'
-import { saveFileJson } from '../utils'
+import { createBrowserAndPage, login, saveFileJson } from '../utils'
 
 const selectorContainer = 'div.ugrid_cnt'
 const namePrevData = 'prevData.json'
@@ -10,33 +7,18 @@ const namePrevData = 'prevData.json'
 let flag = true
 
 // Функция запуска
-export const parserUserLinkProfileData = async () => {
+export const parserUserLinkProfileData = async (
+	groupUsersUrlFragment: string,
+) => {
 	// Настраиваем браузер
-	const browser = await puppeteer.launch({
-		headless: false,
-		slowMo: 100,
-		devtools: false,
-	})
-	const page = await browser.newPage()
 
-	// // Переходим на страницу и ждем ее полной загрузки
-	await page.goto(CONSTANTS.baseUrl + '/natalya.marinicheva/friends', {
-		waitUntil: 'domcontentloaded',
+	const { browser, page } = await createBrowserAndPage(groupUsersUrlFragment, {
+		devtools: true,
 	})
 
-	// Устанавливаем размер окна
-	await page.setViewport({ width: 1080, height: 1024 })
+	// Логинимся
+	login(page)
 
-	// Клик по кнопке "Войти"
-	await page.click('a.h-mod.al')
-	//Ждем появления формы
-	await page.waitForSelector('form')
-	//Вводим логин
-	await page.type('input[name="st.email"]', process.env.LOGIN as string)
-	//Вводим пароль
-	await page.type('input[name="st.password"]', process.env.PASSWORD as string)
-	//Кликаем по кнопке "Войти"
-	await page.click('button[type="submit"]')
 	//Ждем появления контейнера с пользователем
 	await page.waitForSelector(selectorContainer)
 	//Получаем количество пользователей
@@ -48,6 +30,9 @@ export const parserUserLinkProfileData = async () => {
 		while (flag) {
 			const links = (await page.evaluate(() => {
 				window.scrollTo(0, document.body.scrollHeight)
+				// const showMoreButton = document.querySelector(
+				// 	'a.js-show-more.link-show-more',
+				// ) as HTMLAnchorElement
 
 				const linkArray: ILinkItem[] = []
 

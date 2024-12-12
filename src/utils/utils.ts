@@ -1,29 +1,11 @@
 import fs from 'fs'
-import type { Page } from 'puppeteer'
+import type { LaunchOptions, Page } from 'puppeteer'
+import puppeteer from 'puppeteer'
 
-const inputSearchSelector = 'input.input__control'
-const buttonSubmitSelector = 'button.button'
+import { CONSTANTS } from '../constants'
 
-export const addQueryToSearchForm = async (
-	page: Page,
-	waitSelector: string,
-	query: string,
-) => {
-	// Sleep for not search form
-	await page.waitForSelector(waitSelector)
-
-	const inputValue = await page.$eval(inputSearchSelector, el => el.value)
-	// Clear input value
-	await page.click(inputSearchSelector)
-	for (let i = 0; i < inputValue.length; i++) {
-		await page.keyboard.press('Backspace')
-	}
-
-	// Added search query
-	await page.type(inputSearchSelector, query)
-
-	// Clicked button submit
-	await page.click(buttonSubmitSelector)
+export const formatUrl = (urlFragment: string) => {
+	return CONSTANTS.baseUrl + urlFragment
 }
 
 export const saveFileJson = <T>(fileName: string, data: T) => {
@@ -34,4 +16,42 @@ export const saveFileJson = <T>(fileName: string, data: T) => {
 	} else {
 		fs.writeFileSync(fileName, JSON.stringify({ data }))
 	}
+}
+
+export const login = async (page: Page) => {
+	try {
+		// Клик по кнопке "Войти"
+		await page.click('a.h-mod.al')
+		//Ждем появления формы
+		await page.waitForSelector('form')
+		//Вводим логин
+		await page.type('input[name="st.email"]', process.env.LOGIN as string)
+		//Вводим пароль
+		await page.type('input[name="st.password"]', process.env.PASSWORD as string)
+		//Кликаем по кнопке "Войти"
+		await page.click('button[type="submit"]')
+	} catch (error) {
+		console.error('Ошибка логина', error)
+	}
+}
+
+export const createBrowserAndPage = async (
+	groupUsersUrlFragment: string,
+	options?: LaunchOptions,
+) => {
+	const browser = await puppeteer.launch({
+		headless: false,
+		slowMo: 100,
+		devtools: false,
+		...options,
+	})
+
+	const page = await browser.newPage()
+
+	// // Переходим на страницу и ждем ее полной загрузки
+	await page.goto(formatUrl(groupUsersUrlFragment), {
+		waitUntil: 'domcontentloaded',
+	})
+
+	return { browser, page }
 }

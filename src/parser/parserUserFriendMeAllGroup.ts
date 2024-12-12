@@ -69,36 +69,7 @@ export const parserUserFriendMeAllGroup = async () => {
 			count++
 			// browser.close()
 		}
-		// const browser = await puppeteer.launch({
-		// 	headless: false,
-		// 	slowMo: 100,
-		// 	devtools: false,
-		// })
-		// const page = await browser.newPage()
-		// const browser = await puppeteer.launch({
-		// 	headless: false,
-		// 	slowMo: 100,
-		// 	devtools: false,
-		// })
-		// const page = await browser.newPage()
-		// // Переходим на страницу и ждем ее полной загрузки
-		// // Читаем файл
-		// const { data }: IData = JSON.parse(fs.readFileSync(namePrevData, 'utf8'))
-		// // Переходим на страницу и ждем ее полной загрузки
-		// // Читаем файл
-		// const { data }: IData = JSON.parse(fs.readFileSync(namePrevData, 'utf8'))
-		// data.forEach(async ({ link }) => {
-		// 	await page.goto(link, { waitUntil: 'domcontentloaded' })
-		// 	// // Устанавливаем размер окна
-		// 	await page.setViewport({ width: 1080, height: 1024 })
-		// 	await page.click('a[aria-label="Добавить в друзья"]')
-		// 	browser.close()
-		// })
-		// await page.click('a.h-mod.al')
 	} catch (error) {
 		console.error('Хуйня какая то произошла', error)
 	}
-	// Забираем email
-	// const email = await page.$eval('#email_id', elem => elem.textContent)
-	// Если не нашли email, то выходим
 }
