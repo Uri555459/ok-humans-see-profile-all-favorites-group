@@ -13,7 +13,7 @@ export const parserUserLinkProfileData = async (
 	// Настраиваем браузер
 
 	const { browser, page } = await createBrowserAndPage(groupUsersUrlFragment, {
-		devtools: true,
+		// devtools: true,
 	})
 
 	// Логинимся
@@ -30,9 +30,9 @@ export const parserUserLinkProfileData = async (
 		while (flag) {
 			const links = (await page.evaluate(() => {
 				window.scrollTo(0, document.body.scrollHeight)
-				// const showMoreButton = document.querySelector(
-				// 	'a.js-show-more.link-show-more',
-				// ) as HTMLAnchorElement
+				const showMoreButton = document.querySelector(
+					'a.js-show-more.link-show-more',
+				) as HTMLAnchorElement
 
 				const linkArray: ILinkItem[] = []
 
@@ -42,6 +42,10 @@ export const parserUserLinkProfileData = async (
 					const link = item.querySelector('a')?.href as string
 					linkArray.push({ link, id: index })
 				})
+
+				setTimeout(() => showMoreButton.click(), 5000)
+
+				console.log(linkArray.length)
 
 				return linkArray
 			})) as ILinkItem[]
