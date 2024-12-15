@@ -14,6 +14,7 @@ export const parserUserLinkProfileData = async (
 
 	const { browser, page } = await createBrowserAndPage(groupUsersUrlFragment, {
 		// devtools: true,
+		headless: true,
 	})
 
 	// Логинимся
